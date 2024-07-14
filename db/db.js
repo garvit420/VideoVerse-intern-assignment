@@ -1,10 +1,8 @@
-const sequelize = require('../config/database');
-const Video = require('./models/video');
+// db/db.js
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: './database.sqlite', // Example SQLite database file path
+});
 
-const db = {
-  sequelize,
-  Sequelize,
-  Video: Video(sequelize, Sequelize.DataTypes)
-};
-
-module.exports = db;
+module.exports = sequelize;

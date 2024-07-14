@@ -1,15 +1,21 @@
-const tokenKey = process.env.TOKEN_KEY;
+const config = require('../config/config');
 
-module.exports = function (req, res, next) {
-    const token = req.headers['authorization'];
-    const staticToken = tokenKey;
+const authMiddleware = (req, res, next) => {
+  const token = req.headers['authorization'];
   
-    if (!token || token !== `Bearer ${staticToken}`) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
 
-    next();
+  if (token !== 'Bearer ' + config.tokenKey) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+
+  next();
 };
+
+module.exports = authMiddleware;
+
 
 
 // module.exports = function (req, res, next) {
